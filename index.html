@@ -137,7 +137,7 @@
       <img src="https://github.com/lurk99/img/blob/main/Ariya-bannr.png?raw=true" alt="Lurk" />
     </div>
 
-    <h2>Borang Daftar Pelawat</h2>
+    <h2>Borang Daftar Pelawat 2.0</h2>
 
     <form id="visitorForm">
       <label for="nama_penuh">Nama Penuh Pelawat:</label>
@@ -247,48 +247,46 @@
       input.value = input.value.replace(/[^0-9]/g, '');
     }
 
-    function submitForm() {
-  const form = document.getElementById('visitorForm');
-  const successMessage = document.getElementById('successMessage');
 
-  if (form.checkValidity()) {
-    const formData = {
-      nama_penuh: form.nama_penuh.value,
-      telefon_pelawat: form.telefon_pelawat.value,
-      plat_kenderaan: form.plat_kenderaan.value,
-      bilangan_pelawat: form.bilangan_pelawat.value,
-      tarikh_lawatan: form.tarikh_lawatan.value,
-      tujuan_lawatan: form.tujuan_lawatan.value,
-      nama_pemilik: form.nama_pemilik.value,
-      unit_rumah: form.unit_rumah.value,
-      jalan: form.jalan.value,
-      telefon_pemilik: form.telefon_pemilik.value
+
+
+document.getElementById("visitorForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const data = {
+      email: document.getElementById("email").value,
+      nama_penuh: document.getElementById("nama_penuh").value,
+      telefon_pelawat: document.getElementById("telefon_pelawat").value,
+      plat_kenderaan: document.getElementById("plat_kenderaan").value,
+      bilangan_pelawat: document.getElementById("bilangan_pelawat").value,
+      tarikh_lawatan: document.getElementById("tarikh_lawatan").value,
+      tujuan_lawatan: document.getElementById("tujuan_lawatan").value,
+      nama_pemilik: document.getElementById("nama_pemilik").value,
+      unit_rumah: document.getElementById("unit_rumah").value,
+      jalan: document.getElementById("jalan").value,
+      telefon_pemilik: document.getElementById("telefon_pemilik").value
     };
 
-    fetch("https://script.google.com/macros/s/AKfycbwSazi0dn544mEUh8nsBDZhBijPl9jmH6WfqbHX7pShQRY-OOex_oJAwnafvQIIn78P7w/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbx_0D11Bnufv_Ybpk0kGpy4sHgav8jgyYOwGO4Rfn-xZkkEv6M0JLjHese56b-HmD5MXw/exec", {
       method: "POST",
-      mode: "no-cors", // No-CORS jika anda tidak set CORS pada Apps Script
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData)
+      }
     })
-    .then(() => {
-      successMessage.style.display = 'block';
-      alert("MAKLUMAT BERJAYA DIHANTAR! TERIMA KASIH.");
-      setTimeout(() => {
-        form.reset();
-        successMessage.style.display = 'none';
-      }, 1000);
+    .then(res => res.json())
+    .then(response => {
+      alert(response.message);
+      document.getElementById("visitorForm").reset();
     })
-    .catch((error) => {
-      alert("Ralat semasa menghantar borang. Sila cuba lagi.");
-      console.error(error);
+    .catch(err => {
+      alert("Ralat semasa hantar borang.");
+      console.error(err);
     });
-  } else {
-    alert("SILA LENGKAPKAN SEMUA MEDAN YANG WAJIB DIISI.");
-  }
-}
+  });
+  
+
+
 
 
     // Tahun auto
