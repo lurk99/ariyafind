@@ -171,21 +171,14 @@ input, textarea, select {
         opacity: 1; /* las */
       }
     }
-
-
-
-
   </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-
   <div class="container">
     <div class="banner">
       <img src="https://github.com/lurk99/img/blob/main/Ariya-bannr.png?raw=true" alt="Lurk" />
     </div>
-
-
 <p style="
   display: block;
   margin-top: 8px;
@@ -202,46 +195,32 @@ input, textarea, select {
 <small style="display: block; margin-top: 8px; color: #666; font-size: 16px; text-align: center;">
   Visitor Registration Form
 </small>
-
     <form id="visitorForm">
       <label for="nama_penuh">Nama Penuh Pelawat:</label>
       <input type="text" id="nama_penuh" name="nama_penuh" placeholder="Enter Visitor's Full Name" required />
-
 <!-- Telefon Pelawat -->
 <label for="telefon_pelawat">Telefon Pelawat:</label>
 <input type="text" id="telefon_pelawat" name="telefon_pelawat" placeholder="Enter Visitor's Phone Number" required oninput="validateNomborSahaja('telefon_pelawat')" />
 <span id="telefon_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</span>
-
-
-
       <label for="plat_kenderaan">Nombor Plat Kenderaan Pelawat:</label>
       <input type="text" id="plat_kenderaan" name="plat_kenderaan" placeholder="Visitor Vehicle Plate Number" required oninput="validateInputPlatKenderaan(event)" onkeydown="return preventSpace(event)" />
       <div id="spaceWarning" class="notification" style="display: none;">❗ Tidak dibenarkan ruang kosong (space).</div>
       <div id="symbolWarning" class="notification" style="display: none;">❗ Hanya nombor dan huruf dibenarkan, simbol tidak dibenarkan.</div>
-
 <!-- Bilangan Pelawat -->
 <label for="bilangan_pelawat">Bilangan Pelawat:</label>
 <input type="text" id="bilangan_pelawat" name="bilangan_pelawat" placeholder="Number of Visitors" required oninput="validateNomborSahaja('bilangan_pelawat')" />
 <span id="bilangan_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</span>
-
       <label for="tarikh_lawatan">Tarikh Lawatan:</label>
       <input type="date" id="tarikh_lawatan" name="tarikh_lawatan" required />
-
       <label for="tujuan_lawatan">Tujuan Lawatan:</label>
       <textarea id="tujuan_lawatan" name="tujuan_lawatan" placeholder="Purpose of Visit..." required maxlength="250"></textarea>
       <div id="charCount">0 / 250</div>
-
       <label for="nama_pemilik">Nama Pemilik:</label>
       <input type="text" id="nama_pemilik" name="nama_pemilik" placeholder="Enter Owner's Name" required />
-
 <!-- Unit Rumah -->
 <label for="unit_rumah">Nombor Unit Rumah Pemilik:</label>
 <input type="text" id="unit_rumah" name="unit_rumah" placeholder="Enter Owner's House Unit" required oninput="validateUnitRumah()" />
 <span id="unit_rumah-notifikasi" class="notification">❗ Hanya nombor dan huruf A dibenarkan!</span>
-
-
-
-
       <label for="jalan">Jalan Aman Serenia:</label>
       <select id="jalan" name="jalan" required>
         <option value="" disabled selected>Street</option>
@@ -254,27 +233,18 @@ input, textarea, select {
         <option value="15/7">15/7</option>
         <option value="15/8">15/8</option>
       </select>
-
 <!-- Telefon Pemilik -->
 <label for="telefon_pemilik">Telefon Pemilik:</label>
 <input type="text" id="telefon_pemilik" name="telefon_pemilik" placeholder="Enter Owner's Phone Number" required oninput="validateNomborSahaja('telefon_pemilik')" />
 <span id="telefon_pemilik-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</span>
-
-
-
       <br><br>
       <button type="button" id="submitBtn" onclick="submitForm()">HANTAR</button>
 <small style="display: block; margin-top: 8px; color: #666; font-size: 12px; text-align: center;">
   v1.1
 </small>
     </form>
-
-
-
     <div id="successMessage">MAKLUMAT BERJAYA DIHANTAR</div>
   </div>
-
-
   <div class="footer">
     &copy; <span id="currentYear"></span> Powered by Lurk
   </div>
@@ -316,8 +286,6 @@ input, textarea, select {
       }
     }
 
-
-
    // Validasi khas untuk unit_rumah: nombor + huruf A
   function validateUnitRumah() {
     const input = document.getElementById('unit_rumah');
@@ -350,10 +318,6 @@ input, textarea, select {
     input.value = filteredValue;
   }
 
-
-   
-
-
 function submitForm() {
   const form = document.getElementById('visitorForm');
   const successMessage = document.getElementById('successMessage');
@@ -384,27 +348,26 @@ function submitForm() {
       body: JSON.stringify(formData)
     })
     .then(() => {
-      successMessage.style.display = 'block';
 
-      Swal.fire({
-        icon: 'success',
-        title: 'Berjaya!',
-        text: 'Maklumat berjaya dihantar! Terima kasih.',
-        timer: 3500,
-        showConfirmButton: false
-      });
+Swal.fire({
+  icon: 'success',
+  title: 'MAKLUMAT BERJAYA DIHANTAR!',
+  text: 'Terima kasih. Sila klik OK untuk teruskan.',
+  confirmButtonText: 'OK',
+  allowOutsideClick: false,
+  allowEscapeKey: false
+}).then(() => {
+  form.reset();
+  submitBtn.disabled = false;
+});
 
-      setTimeout(() => {
-        form.reset();
-        successMessage.style.display = 'none';
-        submitBtn.disabled = false;
-      }, 1000);
     })
+
     .catch((error) => {
       Swal.fire({
         icon: 'error',
-        title: 'Ralat',
-        text: 'Terdapat masalah semasa menghantar borang. Sila cuba semula.'
+        title: 'Ralat semasa penghantaran',
+        text: 'Sila cuba semula.'
       });
       console.error(error);
       submitBtn.disabled = false;
@@ -412,13 +375,11 @@ function submitForm() {
   } else {
     Swal.fire({
       icon: 'warning',
-      title: 'Lengkapkan Borang',
+      title: 'MAKLUMAT TIDAK LENGKAP',
       text: 'Sila isi semua maklumat yang diperlukan sebelum klik HANTAR.'
     });
   }
 }
-
-
 
     // Tahun auto
     document.getElementById("currentYear").textContent = new Date().getFullYear();
