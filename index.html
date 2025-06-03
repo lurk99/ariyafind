@@ -176,6 +176,7 @@ input, textarea, select {
 
 
   </style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -206,18 +207,22 @@ input, textarea, select {
       <label for="nama_penuh">Nama Penuh Pelawat:</label>
       <input type="text" id="nama_penuh" name="nama_penuh" placeholder="Enter Visitor's Full Name" required />
 
-      <label for="telefon_pelawat">Nombor Telefon Pelawat:</label>
-      <input type="text" id="telefon_pelawat" name="telefon_pelawat" placeholder="Enter Visitor's Phone Number" required oninput="validateNumber(event, 'telefon_pelawat')" />
-      <div id="telefon_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
+<!-- Telefon Pelawat -->
+<label for="telefon_pelawat">Telefon Pelawat:</label>
+<input type="text" id="telefon_pelawat" name="telefon_pelawat" placeholder="Enter Visitor's Phone Number" required oninput="validateNomborSahaja('telefon_pelawat')" />
+<span id="telefon_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</span>
+
+
 
       <label for="plat_kenderaan">Nombor Plat Kenderaan Pelawat:</label>
       <input type="text" id="plat_kenderaan" name="plat_kenderaan" placeholder="Visitor Vehicle Plate Number" required oninput="validateInputPlatKenderaan(event)" onkeydown="return preventSpace(event)" />
       <div id="spaceWarning" class="notification" style="display: none;">❗ Tidak dibenarkan ruang kosong (space).</div>
       <div id="symbolWarning" class="notification" style="display: none;">❗ Hanya nombor dan huruf dibenarkan, simbol tidak dibenarkan.</div>
 
-      <label for="bilangan_pelawat">Bilangan Pelawat:</label>
-      <input type="text" id="bilangan_pelawat" name="bilangan_pelawat" placeholder="Number of Visitors" required oninput="validateNumber(event, 'bilangan_pelawat')" />
-      <div id="bilangan_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
+<!-- Bilangan Pelawat -->
+<label for="bilangan_pelawat">Bilangan Pelawat:</label>
+<input type="text" id="bilangan_pelawat" name="bilangan_pelawat" placeholder="Number of Visitors" required oninput="validateNomborSahaja('bilangan_pelawat')" />
+<span id="bilangan_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</span>
 
       <label for="tarikh_lawatan">Tarikh Lawatan:</label>
       <input type="date" id="tarikh_lawatan" name="tarikh_lawatan" required />
@@ -229,9 +234,13 @@ input, textarea, select {
       <label for="nama_pemilik">Nama Pemilik:</label>
       <input type="text" id="nama_pemilik" name="nama_pemilik" placeholder="Enter Owner's Name" required />
 
+<!-- Unit Rumah -->
 <label for="unit_rumah">Nombor Unit Rumah Pemilik:</label>
-<input type="text" id="unit_rumah" name="unit_rumah" placeholder="Enter Owner's Home Unit" required oninput="validateNumber(event, 'unit_rumah')" />
-<span id="unit_rumah-notifikasi" class="notification" style="display:none; color: red;">❗ Hanya nombor dan huruf A dibenarkan!</span>
+<input type="text" id="unit_rumah" name="unit_rumah" placeholder="Enter Owner's House Unit" required oninput="validateUnitRumah()" />
+<span id="unit_rumah-notifikasi" class="notification">❗ Hanya nombor dan huruf A dibenarkan!</span>
+
+
+
 
       <label for="jalan">Jalan Aman Serenia:</label>
       <select id="jalan" name="jalan" required>
@@ -246,14 +255,17 @@ input, textarea, select {
         <option value="15/8">15/8</option>
       </select>
 
-      <label for="telefon_pemilik">Nombor Telefon Pemilik:</label>
-      <input type="text" id="telefon_pemilik" name="telefon_pemilik" placeholder="Enter Owner's Phone Number" required oninput="validateNumber(event, 'telefon_pemilik')" />
-      <div id="telefon_pemilik-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
+<!-- Telefon Pemilik -->
+<label for="telefon_pemilik">Telefon Pemilik:</label>
+<input type="text" id="telefon_pemilik" name="telefon_pemilik" placeholder="Enter Owner's Phone Number" required oninput="validateNomborSahaja('telefon_pemilik')" />
+<span id="telefon_pemilik-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</span>
+
+
 
       <br><br>
       <button type="button" id="submitBtn" onclick="submitForm()">HANTAR</button>
 <small style="display: block; margin-top: 8px; color: #666; font-size: 12px; text-align: center;">
-  Borang Daftar Pelawat v1.1
+  v1.1
 </small>
     </form>
 
@@ -266,88 +278,151 @@ input, textarea, select {
   <div class="footer">
     &copy; <span id="currentYear"></span> Powered by Lurk
   </div>
-  <script>
-    // Prevent spaces on plat_kenderaan input
-    function preventSpace(e) {
-      if (e.key === ' ') {
-        e.preventDefault();
+
+   <script>
+    function preventSpace(event) {
+      if (event.key === " ") {
+        event.preventDefault();
         document.getElementById('spaceWarning').style.display = 'block';
-        setTimeout(() => { document.getElementById('spaceWarning').style.display = 'none'; }, 2000);
         return false;
-      }
-    }
-
-    // Validate plat_kenderaan: only letters and digits, no symbols, no spaces
-    function validateInputPlatKenderaan(e) {
-      const val = e.target.value.toUpperCase();
-      const regex = /^[A-Z0-9]*$/;
-      if (!regex.test(val)) {
-        document.getElementById('symbolWarning').style.display = 'block';
       } else {
-        document.getElementById('symbolWarning').style.display = 'none';
+        document.getElementById('spaceWarning').style.display = 'none';
+        return true;
       }
-      // Automatically convert to uppercase & remove invalid chars
-      e.target.value = val.replace(/[^A-Z0-9]/g, '');
     }
 
-    // Validate number only inputs
-function validateNumber(event, inputId) {
-  const input = document.getElementById(inputId);
-  const notifikasi = document.getElementById(inputId + '-notifikasi');
-  // Terima hanya 0-9 dan huruf A (besar atau kecil)
-  const originalValue = input.value;
-  // Gantikan semua karakter selain 0-9 dan A/a dengan kosong
-  const filteredValue = originalValue.replace(/[^0-9aA]/g, '');
-  if (originalValue !== filteredValue) {
-    notifikasi.style.display = 'inline';
-  } else {
-    notifikasi.style.display = 'none';
+    function validateInputPlatKenderaan(event) {
+      const input = event.target;
+      const notificationSymbol = document.getElementById('symbolWarning');
+      const validValue = input.value.replace(/[^0-9a-zA-Z]/g, '');
+      if (input.value !== validValue) {
+        input.value = validValue;
+        notificationSymbol.style.display = 'block';
+      } else {
+        notificationSymbol.style.display = 'none';
+      }
+    }
+
+    function validateInput(event) {
+      const input = event.target;
+      const notificationId = input.id + '-notifikasi';
+      const notifikasi = document.getElementById(notificationId);
+      const validValue = input.value.replace(/[^0-9aA]/g, '');
+      if (input.value !== validValue) {
+        input.value = validValue;
+        notifikasi.style.display = 'block';
+      } else {
+        notifikasi.style.display = 'none';
+      }
+    }
+
+
+
+   // Validasi khas untuk unit_rumah: nombor + huruf A
+  function validateUnitRumah() {
+    const input = document.getElementById('unit_rumah');
+    const notifikasi = document.getElementById('unit_rumah-notifikasi');
+    const originalValue = input.value;
+    const filteredValue = originalValue.replace(/[^0-9aA]/g, '');
+
+    if (originalValue !== filteredValue) {
+      notifikasi.style.display = 'inline';
+    } else {
+      notifikasi.style.display = 'none';
+    }
+
+    input.value = filteredValue.toUpperCase();
   }
-  input.value = filteredValue.toUpperCase(); // Tukar semua ke huruf besar A untuk konsisten
+
+  // Validasi umum untuk nombor sahaja: digunakan untuk telefon & bilangan pelawat
+  function validateNomborSahaja(inputId) {
+    const input = document.getElementById(inputId);
+    const notifikasi = document.getElementById(inputId + '-notifikasi');
+    const originalValue = input.value;
+    const filteredValue = originalValue.replace(/[^0-9]/g, '');
+
+    if (originalValue !== filteredValue) {
+      notifikasi.style.display = 'inline';
+    } else {
+      notifikasi.style.display = 'none';
+    }
+
+    input.value = filteredValue;
+  }
+
+
+   
+
+
+function submitForm() {
+  const form = document.getElementById('visitorForm');
+  const successMessage = document.getElementById('successMessage');
+  const submitBtn = document.getElementById('submitBtn');
+
+  if (form.checkValidity()) {
+    submitBtn.disabled = true;
+
+    const formData = {
+      nama_penuh: form.nama_penuh.value,
+      telefon_pelawat: form.telefon_pelawat.value,
+      plat_kenderaan: form.plat_kenderaan.value,
+      bilangan_pelawat: form.bilangan_pelawat.value,
+      tarikh_lawatan: form.tarikh_lawatan.value,
+      tujuan_lawatan: form.tujuan_lawatan.value,
+      nama_pemilik: form.nama_pemilik.value,
+      unit_rumah: form.unit_rumah.value,
+      jalan: form.jalan.value,
+      telefon_pemilik: form.telefon_pemilik.value
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbw93gMtNMl820RsYJ3RW62eo1I8ZGAby7q5Kr6FGQQ8qum-tqcAXM4Ys4CFv-gXV-dFPg/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(() => {
+      successMessage.style.display = 'block';
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Berjaya!',
+        text: 'Maklumat berjaya dihantar! Terima kasih.',
+        timer: 2500,
+        showConfirmButton: false
+      });
+
+      setTimeout(() => {
+        form.reset();
+        successMessage.style.display = 'none';
+        submitBtn.disabled = false;
+      }, 1000);
+    })
+    .catch((error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Ralat',
+        text: 'Terdapat masalah semasa menghantar borang. Sila cuba lagi.'
+      });
+      console.error(error);
+      submitBtn.disabled = false;
+    });
+  } else {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Lengkapkan Borang',
+      text: 'Sila isi semua maklumat yang diperlukan sebelum klik HANTAR.'
+    });
+  }
 }
 
-    // Character count for tujuan_lawatan textarea
-    const tujuanTextarea = document.getElementById('tujuan_lawatan');
-    const charCountDisplay = document.getElementById('charCount');
-    tujuanTextarea.addEventListener('input', () => {
-      charCountDisplay.textContent = `${tujuanTextarea.value.length} / 250`;
-    });
 
-    // Clear notifications on form input
-    document.querySelectorAll('input, textarea, select').forEach(input => {
-      input.addEventListener('input', () => {
-        // Hide all notifications for this field if any
-        const notif = document.getElementById(input.id + '-notifikasi');
-        if (notif) notif.style.display = 'none';
-      });
-    });
 
-    // Submit form logic (stub)
-    function submitForm() {
-      // Basic validation can go here if you want
-
-      // For demonstration, show success message and reset
-      const form = document.getElementById('visitorForm');
-      if (!form.checkValidity()) {
-        alert('Sila lengkapkan semua medan wajib dengan betul!');
-        return;
-      }
-
-      // Show success message
-      const successMsg = document.getElementById('successMessage');
-      successMsg.style.display = 'block';
-
-      // Scroll to success message smoothly
-      successMsg.scrollIntoView({ behavior: 'smooth' });
-
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        successMsg.style.display = 'none';
-        form.reset();
-        charCountDisplay.textContent = '0 / 250';
-      }, 3000);
-    }
-        document.getElementById("currentYear").textContent = new Date().getFullYear();
+    // Tahun auto
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
   </script>
+
 </body>
 </html>
