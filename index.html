@@ -390,7 +390,7 @@ function submitForm() {
         icon: 'success',
         title: 'Berjaya!',
         text: 'Maklumat berjaya dihantar! Terima kasih.',
-        timer: 2500,
+        timer: 3500,
         showConfirmButton: false
       });
 
@@ -404,7 +404,7 @@ function submitForm() {
       Swal.fire({
         icon: 'error',
         title: 'Ralat',
-        text: 'Terdapat masalah semasa menghantar borang. Sila cuba lagi.'
+        text: 'Terdapat masalah semasa menghantar borang. Sila cuba semula.'
       });
       console.error(error);
       submitBtn.disabled = false;
