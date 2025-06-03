@@ -137,54 +137,57 @@
       <img src="https://github.com/lurk99/img/blob/main/Ariya-bannr.png?raw=true" alt="Lurk" />
     </div>
 
-    <h2>Borang Daftar Pelawat 2.2</h2>
+    <h2>Borang Daftar Pelawat 2.3</h2>
 
-    <form id="visitorForm">
-      <label for="nama_penuh">Nama Penuh Pelawat:</label>
-      <input type="text" id="nama_penuh" placeholder="Masukkan Nama Penuh" required />
+   
+<form id="visitorForm">
+  <label for="nama_penuh">Nama Penuh Pelawat:</label>
+  <input type="text" id="nama_penuh" name="nama_penuh" placeholder="Enter Visitor's Full Name" required />
 
-      <label for="telefon_pelawat">Nombor Telefon Pelawat:</label>
-      <input type="text" id="telefon_pelawat" placeholder="Masukkan No. Telefon Pelawat" oninput="validateNumber(event, 'telefon_pelawat')" />
-      <div id="telefon_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
+  <label for="telefon_pelawat">Nombor Telefon Pelawat:</label>
+  <input type="text" id="telefon_pelawat" name="telefon_pelawat" placeholder="Enter Visitor's Phone Number" required oninput="validateNumber(event, 'telefon_pelawat')" />
+  <div id="telefon_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
 
-      <label for="plat_kenderaan">Nombor Plat Kenderaan Pelawat:</label>
-      <input type="text" id="plat_kenderaan" placeholder="Masukkan No. Plat Kenderaan" required oninput="validateInputPlatKenderaan(event)" onkeydown="return preventSpace(event)">
-      <div id="spaceWarning" style="color: red; font-size: 0.9em; display: none;">❗ Tidak dibenarkan ruang kosong (space).</div>
-      <div id="symbolWarning" style="color: red; font-size: 0.9em; display: none;">❗ Hanya nombor dan huruf dibenarkan, simbol tidak dibenarkan.</div>
+  <label for="plat_kenderaan">Nombor Plat Kenderaan Pelawat:</label>
+  <input type="text" id="plat_kenderaan" name="plat_kenderaan" placeholder="Visitor Vehicle Plate Number" required oninput="validateInputPlatKenderaan(event)" onkeydown="return preventSpace(event)" />
+  <div id="spaceWarning" style="color: red; font-size: 0.9em; display: none;">❗ Tidak dibenarkan ruang kosong (space).</div>
+  <div id="symbolWarning" style="color: red; font-size: 0.9em; display: none;">❗ Hanya nombor dan huruf dibenarkan, simbol tidak dibenarkan.</div>
 
-      <label for="bilangan_pelawat">Bilangan Pelawat:</label>
-      <input type="text" id="bilangan_pelawat" placeholder="Masukkan Bilangan Pelawat" oninput="validateNumber(event, 'bilangan_pelawat')" />
-      <div id="bilangan_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
+  <label for="bilangan_pelawat">Bilangan Pelawat:</label>
+  <input type="text" id="bilangan_pelawat" name="bilangan_pelawat" placeholder="Number of Visitors" required oninput="validateNumber(event, 'bilangan_pelawat')" />
+  <div id="bilangan_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
 
-      <label for="tarikh_lawatan">Tarikh Lawatan:</label>
-      <input type="date" id="tarikh_lawatan" required>
+  <label for="tarikh_lawatan">Tarikh Lawatan:</label>
+  <input type="date" id="tarikh_lawatan" name="tarikh_lawatan" required />
 
-      <label for="tujuan_lawatan">Tujuan Lawatan:</label>
-      <textarea id="tujuan_lawatan" placeholder="Tulis Tujuan Lawatan..." required></textarea>
+  <label for="tujuan_lawatan">Tujuan Lawatan:</label>
+  <textarea id="tujuan_lawatan" name="tujuan_lawatan" placeholder="Purpose of Visit..." required></textarea>
 
-      <label for="nama_pemilik">Nama Pemilik:</label>
-      <input type="text" id="nama_pemilik" placeholder="Masukkan Nama Pemilik" required>
+  <label for="nama_pemilik">Nama Pemilik:</label>
+  <input type="text" id="nama_pemilik" name="nama_pemilik" placeholder="Enter the Owner's Name" required />
 
-      <label for="unit_rumah">Nombor Unit Rumah Pemilik:</label>
-      <input type="text" id="unit_rumah" placeholder="Masukkan No. Unit Rumah" oninput="validateInput(event)">
-      <span id="unit_rumah-notifikasi" style="color: red; font-size: 0.9em; display: none;">❗ Hanya nombor dibenarkan!</span>
+  <label for="unit_rumah">Nombor Unit Rumah Pemilik:</label>
+  <input type="text" id="unit_rumah" name="unit_rumah" placeholder="Enter Owner's Home Unit" required oninput="validateNumber(event, 'unit_rumah')" />
+  <span id="unit_rumah-notifikasi" style="color: red; font-size: 0.9em; display: none;">❗ Hanya nombor dibenarkan!</span>
 
-      <label for="jalan">Jalan:</label>
-      <select id="jalan" required>
-        <option value="" disabled selected>Pilih Jalan</option>
-        <option value="15/1">15/1</option>
-        <option value="15/2">15/2</option>
-        <option value="15/3">15/3</option>
-        <option value="15/4">15/4</option>
-        <option value="15/5">15/5</option>
-        <option value="15/6">15/6</option>
-        <option value="15/7">15/7</option>
-        <option value="15/8">15/8</option>
-      </select>
+  <label for="jalan">Jalan Aman Serenia:</label>
+  <select id="jalan" name="jalan" required>
+    <option value="" disabled selected>Street</option>
+    <option value="15/1">15/1</option>
+    <option value="15/2">15/2</option>
+    <option value="15/3">15/3</option>
+    <option value="15/4">15/4</option>
+    <option value="15/5">15/5</option>
+    <option value="15/6">15/6</option>
+    <option value="15/7">15/7</option>
+    <option value="15/8">15/8</option>
+  </select>
 
-      <label for="telefon_pemilik">Nombor Telefon Pemilik:</label>
-      <input type="text" id="telefon_pemilik" placeholder="Masukkan No. Telefon Pemilik" oninput="validateNumber(event, 'telefon_pemilik')" />
-      <div id="telefon_pemilik-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
+  <label for="telefon_pemilik">Nombor Telefon Pemilik:</label>
+  <input type="text" id="telefon_pemilik" name="telefon_pemilik" placeholder="Enter Owner's Phone Number" required oninput="validateNumber(event, 'telefon_pemilik')" />
+  <div id="telefon_pemilik-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
+
+
 
       <br><br>
 <button type="button" id="submitBtn" onclick="submitForm()">HANTAR</button>
@@ -193,7 +196,7 @@
     <div id="successMessage">MAKLUMAT BERJAYA DIHANTAR!</div>
   </div>
 
-  <!-- ✅ Footer betul-betul di bawah dan luar container -->
+  <!-- ftr-->
   <div class="footer">
     &copy; <span id="currentYear"></span> Developer: Lurk
   </div>
