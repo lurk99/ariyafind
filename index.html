@@ -184,7 +184,23 @@ input, textarea, select {
       <img src="https://github.com/lurk99/img/blob/main/Ariya-bannr.png?raw=true" alt="Lurk" />
     </div>
 
-    <h2>Borang Daftar Pelawat</h2>
+
+<p style="
+  display: block;
+  margin-top: 8px;
+  font-size: 25px;
+  text-align: center;
+  color: #555;
+  font-weight: 600;
+  text-shadow:
+    0.5px 0.5px 0.5px rgba(255, 255, 255, 0.4),  /* very subtle highlight */
+   -0.5px -0.5px 0.5px rgba(0, 0, 0, 0.2);       /* very subtle shadow */
+">
+  Borang Daftar Pelawat
+</p>
+<small style="display: block; margin-top: 8px; color: #666; font-size: 16px; text-align: center;">
+  Visitor Registration Form
+</small>
 
     <form id="visitorForm">
       <label for="nama_penuh">Nama Penuh Pelawat:</label>
@@ -246,10 +262,10 @@ input, textarea, select {
     <div id="successMessage">MAKLUMAT BERJAYA DIHANTAR</div>
   </div>
 
-  <div class="footer">
-    Powered by Lurk AI + OpenAI
-  </div>
 
+  <div class="footer">
+    &copy; <span id="currentYear"></span> Powered by Lurk
+  </div>
   <script>
     // Prevent spaces on plat_kenderaan input
     function preventSpace(e) {
@@ -329,6 +345,7 @@ input, textarea, select {
         charCountDisplay.textContent = '0 / 250';
       }, 3000);
     }
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
