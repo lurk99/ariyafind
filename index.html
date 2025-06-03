@@ -248,34 +248,48 @@
     }
 
     function submitForm() {
-      const form = document.getElementById('visitorForm');
-      const successMessage = document.getElementById('successMessage');
-      if (form.checkValidity()) {
-        const formData = {
-          nama_penuh: form.nama_penuh.value,
-          telefon_pelawat: form.telefon_pelawat.value,
-          plat_kenderaan: form.plat_kenderaan.value,
-          bilangan_pelawat: form.bilangan_pelawat.value,
-          tarikh_lawatan: form.tarikh_lawatan.value,
-          tujuan_lawatan: form.tujuan_lawatan.value,
-          nama_pemilik: form.nama_pemilik.value,
-          unit_rumah: form.unit_rumah.value,
-          jalan: form.jalan.value,
-          telefon_pemilik: form.telefon_pemilik.value
-        };
+  const form = document.getElementById('visitorForm');
+  const successMessage = document.getElementById('successMessage');
 
-        google.script.run.withSuccessHandler(function () {
-          successMessage.style.display = 'block';
-          alert("MAKLUMAT BERJAYA DIHANTAR! TERIMA KASIH.");
-          setTimeout(function () {
-            form.reset();
-            successMessage.style.display = 'none';
-          }, 1000);
-        }).submitForm(formData);
-      } else {
-        alert("SILA LENGKAPKAN SEMUA MEDAN YANG WAJIB DIISI SEBELUM KLIK HANTAR!");
-      }
-    }
+  if (form.checkValidity()) {
+    const formData = {
+      nama_penuh: form.nama_penuh.value,
+      telefon_pelawat: form.telefon_pelawat.value,
+      plat_kenderaan: form.plat_kenderaan.value,
+      bilangan_pelawat: form.bilangan_pelawat.value,
+      tarikh_lawatan: form.tarikh_lawatan.value,
+      tujuan_lawatan: form.tujuan_lawatan.value,
+      nama_pemilik: form.nama_pemilik.value,
+      unit_rumah: form.unit_rumah.value,
+      jalan: form.jalan.value,
+      telefon_pemilik: form.telefon_pemilik.value
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbwSazi0dn544mEUh8nsBDZhBijPl9jmH6WfqbHX7pShQRY-OOex_oJAwnafvQIIn78P7w/exec", {
+      method: "POST",
+      mode: "no-cors", // No-CORS jika anda tidak set CORS pada Apps Script
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(() => {
+      successMessage.style.display = 'block';
+      alert("MAKLUMAT BERJAYA DIHANTAR! TERIMA KASIH.");
+      setTimeout(() => {
+        form.reset();
+        successMessage.style.display = 'none';
+      }, 1000);
+    })
+    .catch((error) => {
+      alert("Ralat semasa menghantar borang. Sila cuba lagi.");
+      console.error(error);
+    });
+  } else {
+    alert("SILA LENGKAPKAN SEMUA MEDAN YANG WAJIB DIISI.");
+  }
+}
+
 
     // Tahun auto
     document.getElementById("currentYear").textContent = new Date().getFullYear();
