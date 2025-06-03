@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Borang Pendaftaran</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lurk - Borang Daftar Pelawat</title>
 
-  <!-- Link Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
 
   <style>
-    /* Gaya Global */
     * {
       margin: 0;
       padding: 0;
@@ -17,7 +16,11 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    /* Background full screen */
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
     body {
       background: url('https://github.com/lurk99/img/blob/main/serenia_ariya.jpg?raw=true') no-repeat center center fixed;
       background-size: cover;
@@ -26,23 +29,20 @@
       padding: 20px;
     }
 
-    /* Container utama */
     .container {
       max-width: 650px;
       background: rgba(0, 0, 0, 0.7);
       padding: 20px;
-      margin: auto;
+      margin: 40px auto 0 auto;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     }
 
-    /* Banner Image */
-    .banner {
+    .banner img {
       width: 100%;
       border-radius: 10px;
     }
 
-    /* Label & Input */
     label {
       display: block;
       text-align: left;
@@ -50,15 +50,15 @@
       margin: 10px 0 5px;
     }
 
-    input, textarea {
+    input, textarea, select {
       width: 100%;
       padding: 10px;
       border-radius: 5px;
       border: none;
       font-size: 16px;
+      text-transform: uppercase;
     }
 
-    /* Button */
     button {
       background: #ff6600;
       color: white;
@@ -76,48 +76,209 @@
       background: #ff3300;
     }
 
-    /* Responsif */
+    .notification {
+      color: red;
+      font-size: 0.9em;
+      display: none;
+    }
+
+    #successMessage {
+      display: none;
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+      border-radius: 5px;
+      font-size: 1.2em;
+      transition: opacity 0.5s ease-in-out;
+    }
+
     @media (max-width: 500px) {
       .container {
         width: 90%;
       }
+
+      .footer {
+        width: 90%;
+      }
     }
+
+.footer {
+  margin-top: 40px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.85);
+  text-align: center;
+  text-shadow: 1px 1px 1.5px rgba(255, 255, 255, 0.6);
+  opacity: 0; /* Mulakan dengan opacity 0 (tak nampak) */
+  animation: fadeIn 5s ease-in-out infinite; /* Ubah jadi infinite untuk berulang tanpa henti */
+}
+
+/* fade-in loop */
+@keyframes fadeIn {
+  0% {
+    opacity: 1; /* stat */
+  }
+  50% {
+    opacity: 0; /* nmpk */
+  }
+  100% {
+    opacity: 1; /* las */
+  }
+}
   </style>
 </head>
 <body>
- <div class="container">
-        <div class="banner">
-            <img src="https://github.com/lurk99/img/blob/main/Ariya-bannr.png?raw=true" alt="Lurk">
-        </div>
-  
-  <!-- Borang -->
 
-    <h2>Borang Pendaftaran</h2>
-    
-    <label for="name">Nama:</label>
-    <input type="text" id="name" placeholder="Masukkan Nama" required>
-    <label for="email">Email:</label>
-    <input type="email" id="email" placeholder="Masukkan Email" required>
+  <div class="container">
+    <div class="banner">
+      <img src="https://github.com/lurk99/img/blob/main/Ariya-bannr.png?raw=true" alt="Lurk" />
+    </div>
 
-    <label for="message">Mesej:</label>
-    <textarea id="message" placeholder="Tulis mesej anda..." required></textarea>
+    <h2>Borang Daftar Pelawat</h2>
 
-    <button onclick="submitForm()">Hantar</button>
-    <p id="response"></p>
+    <form id="visitorForm">
+      <label for="nama_penuh">Nama Penuh Pelawat:</label>
+      <input type="text" id="nama_penuh" placeholder="Masukkan Nama Penuh" required />
+
+      <label for="telefon_pelawat">Nombor Telefon Pelawat:</label>
+      <input type="text" id="telefon_pelawat" placeholder="Masukkan No. Telefon Pelawat" oninput="validateNumber(event, 'telefon_pelawat')" />
+      <div id="telefon_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
+
+      <label for="plat_kenderaan">Nombor Plat Kenderaan Pelawat:</label>
+      <input type="text" id="plat_kenderaan" placeholder="Masukkan No. Plat Kenderaan" required oninput="validateInputPlatKenderaan(event)" onkeydown="return preventSpace(event)">
+      <div id="spaceWarning" style="color: red; font-size: 0.9em; display: none;">❗ Tidak dibenarkan ruang kosong (space).</div>
+      <div id="symbolWarning" style="color: red; font-size: 0.9em; display: none;">❗ Hanya nombor dan huruf dibenarkan, simbol tidak dibenarkan.</div>
+
+      <label for="bilangan_pelawat">Bilangan Pelawat:</label>
+      <input type="text" id="bilangan_pelawat" placeholder="Masukkan Bilangan Pelawat" oninput="validateNumber(event, 'bilangan_pelawat')" />
+      <div id="bilangan_pelawat-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
+
+      <label for="tarikh_lawatan">Tarikh Lawatan:</label>
+      <input type="date" id="tarikh_lawatan" required>
+
+      <label for="tujuan_lawatan">Tujuan Lawatan:</label>
+      <textarea id="tujuan_lawatan" placeholder="Tulis Tujuan Lawatan..." required></textarea>
+
+      <label for="nama_pemilik">Nama Pemilik:</label>
+      <input type="text" id="nama_pemilik" placeholder="Masukkan Nama Pemilik" required>
+
+      <label for="unit_rumah">Nombor Unit Rumah Pemilik:</label>
+      <input type="text" id="unit_rumah" placeholder="Masukkan No. Unit Rumah" oninput="validateInput(event)">
+      <span id="unit_rumah-notifikasi" style="color: red; font-size: 0.9em; display: none;">❗ Hanya nombor dibenarkan!</span>
+
+      <label for="jalan">Jalan:</label>
+      <select id="jalan" required>
+        <option value="" disabled selected>Pilih Jalan</option>
+        <option value="15/1">15/1</option>
+        <option value="15/2">15/2</option>
+        <option value="15/3">15/3</option>
+        <option value="15/4">15/4</option>
+        <option value="15/5">15/5</option>
+        <option value="15/6">15/6</option>
+        <option value="15/7">15/7</option>
+        <option value="15/8">15/8</option>
+      </select>
+
+      <label for="telefon_pemilik">Nombor Telefon Pemilik:</label>
+      <input type="text" id="telefon_pemilik" placeholder="Masukkan No. Telefon Pemilik" oninput="validateNumber(event, 'telefon_pemilik')" />
+      <div id="telefon_pemilik-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
+
+      <br><br>
+      <button type="button" onclick="submitForm()">HANTAR</button>
+    </form>
+
+    <div id="successMessage">MAKLUMAT BERJAYA DIHANTAR!</div>
+  </div>
+
+  <!-- ✅ Footer betul-betul di bawah dan luar container -->
+  <div class="footer">
+    &copy; <span id="currentYear"></span> Developer: Lurk
   </div>
 
   <script>
-    function submitForm() {
-      var formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        message: document.getElementById('message').value
-      };
-
-      google.script.run.withSuccessHandler(function(response) {
-        document.getElementById('response').innerText = response;
-      }).submitForm(formData);
+    function preventSpace(event) {
+      if (event.key === " ") {
+        event.preventDefault();
+        document.getElementById('spaceWarning').style.display = 'block';
+        return false;
+      } else {
+        document.getElementById('spaceWarning').style.display = 'none';
+        return true;
+      }
     }
+
+    function validateInputPlatKenderaan(event) {
+      const input = event.target;
+      const notificationSymbol = document.getElementById('symbolWarning');
+      const validValue = input.value.replace(/[^0-9a-zA-Z]/g, '');
+      if (input.value !== validValue) {
+        input.value = validValue;
+        notificationSymbol.style.display = 'block';
+      } else {
+        notificationSymbol.style.display = 'none';
+      }
+    }
+
+    function validateInput(event) {
+      const input = event.target;
+      const notificationId = input.id + '-notifikasi';
+      const notifikasi = document.getElementById(notificationId);
+      const validValue = input.value.replace(/[^0-9aA]/g, '');
+      if (input.value !== validValue) {
+        input.value = validValue;
+        notifikasi.style.display = 'block';
+      } else {
+        notifikasi.style.display = 'none';
+      }
+    }
+
+    function validateNumber(event, inputId) {
+      const input = event.target;
+      const notificationId = inputId + '-notifikasi';
+      const notifikasi = document.getElementById(notificationId);
+      if (isNaN(input.value) || input.value === '') {
+        notifikasi.style.display = 'block';
+      } else {
+        notifikasi.style.display = 'none';
+      }
+      input.value = input.value.replace(/[^0-9]/g, '');
+    }
+
+    function submitForm() {
+      const form = document.getElementById('visitorForm');
+      const successMessage = document.getElementById('successMessage');
+      if (form.checkValidity()) {
+        const formData = {
+          nama_penuh: form.nama_penuh.value,
+          telefon_pelawat: form.telefon_pelawat.value,
+          plat_kenderaan: form.plat_kenderaan.value,
+          bilangan_pelawat: form.bilangan_pelawat.value,
+          tarikh_lawatan: form.tarikh_lawatan.value,
+          tujuan_lawatan: form.tujuan_lawatan.value,
+          nama_pemilik: form.nama_pemilik.value,
+          unit_rumah: form.unit_rumah.value,
+          jalan: form.jalan.value,
+          telefon_pemilik: form.telefon_pemilik.value
+        };
+
+        google.script.run.withSuccessHandler(function () {
+          successMessage.style.display = 'block';
+          alert("MAKLUMAT BERJAYA DIHANTAR! TERIMA KASIH.");
+          setTimeout(function () {
+            form.reset();
+            successMessage.style.display = 'none';
+          }, 1000);
+        }).submitForm(formData);
+      } else {
+        alert("SILA LENGKAPKAN SEMUA MEDAN YANG WAJIB DIISI SEBELUM KLIK HANTAR!");
+      }
+    }
+
+    // Tahun auto
+    document.getElementById("currentYear").textContent = new Date().getFullYear();
   </script>
 
 </body>
