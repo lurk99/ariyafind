@@ -137,7 +137,7 @@
       <img src="https://github.com/lurk99/img/blob/main/Ariya-bannr.png?raw=true" alt="Lurk" />
     </div>
 
-    <h2>Borang Daftar Pelawat 2.1</h2>
+    <h2>Borang Daftar Pelawat 2.2</h2>
 
     <form id="visitorForm">
       <label for="nama_penuh">Nama Penuh Pelawat:</label>
@@ -187,7 +187,7 @@
       <div id="telefon_pemilik-notifikasi" class="notification">❗ Hanya nombor dibenarkan!</div>
 
       <br><br>
-      <button type="button" onclick="submitForm()">HANTAR</button>
+<button type="button" id="submitBtn" onclick="submitForm()">HANTAR</button>
     </form>
 
     <div id="successMessage">MAKLUMAT BERJAYA DIHANTAR!</div>
@@ -247,11 +247,14 @@
       input.value = input.value.replace(/[^0-9]/g, '');
     }
 
-    function submitForm() {
+function submitForm() {
   const form = document.getElementById('visitorForm');
   const successMessage = document.getElementById('successMessage');
+  const submitBtn = document.getElementById('submitBtn');
 
   if (form.checkValidity()) {
+    submitBtn.disabled = true;  // Disable button on submit start
+
     const formData = {
       nama_penuh: form.nama_penuh.value,
       telefon_pelawat: form.telefon_pelawat.value,
@@ -267,7 +270,7 @@
 
     fetch("https://script.google.com/macros/s/AKfycbwUEFv5jDqfgigl_qD5PTnDH1q6XDIsNWdpkpLaRZOiAjY_VMw1tNLVqGSrCRFjY8ZhNw/exec", {
       method: "POST",
-      mode: "no-cors", // No-CORS jika anda tidak set CORS pada Apps Script
+      mode: "no-cors",
       headers: {
         "Content-Type": "application/json"
       },
@@ -279,11 +282,13 @@
       setTimeout(() => {
         form.reset();
         successMessage.style.display = 'none';
+        submitBtn.disabled = false; // Re-enable after success
       }, 1000);
     })
     .catch((error) => {
       alert("Ralat semasa menghantar borang. Sila cuba lagi.");
       console.error(error);
+      submitBtn.disabled = false; // Re-enable on error
     });
   } else {
     alert("SILA LENGKAPKAN SEMUA MEDAN YANG WAJIB DIISI.");
